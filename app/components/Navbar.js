@@ -6,7 +6,7 @@ const Navbar = () => {
     <div className="w-full bg-slate-500 p-6">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/">
-          <h1 className="text-white font-bold">Edel's Upload File Project</h1>
+          <h1 className="text-white font-bold">Edel Upload File Project</h1>
         </Link>
         <nav className="flex gap-4 items-center text-white">
           <Link className="active" href="/">
