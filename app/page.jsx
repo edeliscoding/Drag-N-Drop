@@ -84,11 +84,13 @@ export default function Home() {
   return (
     <div className="App">
       <div
-        className="dropzone bg-gray-200 h-[300px] text-center max-w-7xl mx-auto mt-20"
+        className="dropzone bg-gray-100 h-[300px] text-center max-w-7xl mx-auto mt-20 border-8 border-dotted pt-20 font-500"
         {...getRootProps()}
       >
         <input {...getInputProps()} />
-        {isDragActive ? "Drag Active" : "You can drop your files here"}
+        {isDragActive
+          ? "Drag Active"
+          : "You can drop your files here or click here"}
       </div>
       <div>
         {images.length > 0 && (
