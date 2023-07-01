@@ -9,9 +9,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NextResponse } from "next/server";
 import axiosInstance from "./api/utils";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [images, setImages] = useState([]);
+  const session = useSession();
+  const router = useRouter();
+  console.log(session);
 
   const notify = (callback) =>
     toast.success(
@@ -81,51 +86,109 @@ export default function Home() {
   useEffect(() => {
     console.log(images);
   }, [images]);
-  return (
-    <div className="App">
-      <div
-        className="dropzone bg-gray-100 h-[300px] text-center max-w-7xl mx-auto mt-20 border-8 border-dotted pt-20 font-500"
-        {...getRootProps()}
-      >
-        <input {...getInputProps()} />
-        {isDragActive
-          ? "Drag Active"
-          : "You can drop your files here or click here"}
-      </div>
-      <div>
+
+  if (session.status === "loading") {
+    return <p>Loading...</p>;
+  }
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
+  }
+
+  if (session.status === "authenticated") {
+    return (
+      <div className="App">
+        <div
+          className="dropzone bg-gray-100 h-[300px] text-center max-w-7xl mx-auto mt-20 border-8 border-dotted pt-20 font-500"
+          {...getRootProps()}
+        >
+          <input {...getInputProps()} />
+          {isDragActive
+            ? "Drag Active"
+            : "You can drop your files here or click here"}
+        </div>
+        <div>
+          {images.length > 0 && (
+            <div className="flex items-center justify-center">
+              {images.map((image, index) => {
+                return (
+                  <img
+                    className="m-4"
+                    src={image}
+                    key={index}
+                    height="100"
+                    width="100"
+                  />
+                );
+              })}
+            </div>
+          )}
+        </div>
         {images.length > 0 && (
-          <div className="flex items-center justify-center">
-            {images.map((image, index) => {
-              return (
-                <img
-                  className="m-4"
-                  src={image}
-                  key={index}
-                  height="100"
-                  width="100"
-                />
-              );
-            })}
+          <div className="flex item-center justify-center">
+            <button
+              className="text-center px-3 py-2 bg-slate-700 text-white"
+              onClick={handleUpload}
+            >
+              Upload Images
+            </button>
+            <button
+              className="text-center px-2 py-1 bg-gray-400 text-white ml-2 block"
+              onClick={handleClear}
+            >
+              Clear Upload
+            </button>
+            <ToastContainer />
           </div>
         )}
       </div>
-      {images.length > 0 && (
-        <div className="flex item-center justify-center">
-          <button
-            className="text-center px-3 py-2 bg-slate-700 text-white"
-            onClick={handleUpload}
-          >
-            Upload Images
-          </button>
-          <button
-            className="text-center px-2 py-1 bg-gray-400 text-white ml-2 block"
-            onClick={handleClear}
-          >
-            Clear Upload
-          </button>
-          <ToastContainer />
-        </div>
-      )}
-    </div>
-  );
+    );
+  }
+
+  // return (
+  //   <div className="App">
+  //     <div
+  //       className="dropzone bg-gray-100 h-[300px] text-center max-w-7xl mx-auto mt-20 border-8 border-dotted pt-20 font-500"
+  //       {...getRootProps()}
+  //     >
+  //       <input {...getInputProps()} />
+  //       {isDragActive
+  //         ? "Drag Active"
+  //         : "You can drop your files here or click here"}
+  //     </div>
+  //     <div>
+  //       {images.length > 0 && (
+  //         <div className="flex items-center justify-center">
+  //           {images.map((image, index) => {
+  //             return (
+  //               <img
+  //                 className="m-4"
+  //                 src={image}
+  //                 key={index}
+  //                 height="100"
+  //                 width="100"
+  //               />
+  //             );
+  //           })}
+  //         </div>
+  //       )}
+  //     </div>
+  //     {images.length > 0 && (
+  //       <div className="flex item-center justify-center">
+  //         <button
+  //           className="text-center px-3 py-2 bg-slate-700 text-white"
+  //           onClick={handleUpload}
+  //         >
+  //           Upload Images
+  //         </button>
+  //         <button
+  //           className="text-center px-2 py-1 bg-gray-400 text-white ml-2 block"
+  //           onClick={handleClear}
+  //         >
+  //           Clear Upload
+  //         </button>
+  //         <ToastContainer />
+  //       </div>
+  //     )}
+  //   </div>
+  // );
 }

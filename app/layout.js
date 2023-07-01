@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "./components/Navbar";
 import Script from "next/script";
+import AuthProvider from "./components/AuthProvider/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,14 +15,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="">
-          <Navbar />
-          {children}
-          <Script
-            strategy="beforeInteractive"
-            src="https://product-gallery.cloudinary.com/all.js"
-          />
-        </div>
+        <AuthProvider>
+          <div className="">
+            <Navbar />
+            {children}
+            <Script
+              strategy="beforeInteractive"
+              src="https://product-gallery.cloudinary.com/all.js"
+            />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

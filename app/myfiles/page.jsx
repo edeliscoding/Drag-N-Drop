@@ -2,6 +2,7 @@
 import Head from "next/head";
 import Script from "next/script";
 import { useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
 
 export default function MyPage() {
   const containerRef = useRef(null);
@@ -22,7 +23,6 @@ export default function MyPage() {
   }, []);
   return (
     <div ref={containerRef} className="max-w-7xl mx-auto mt-10" id="my-gallery">
-      <Script src="https://product-gallery.cloudinary.com/all.js" />
       Gallery Page
     </div>
   );
