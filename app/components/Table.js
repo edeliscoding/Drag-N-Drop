@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 const Table = ({ data }) => {
+  // console.log(props);
   return (
     <table className="mt-20 table-auto border-separate mb-2 w-full">
       <thead>
@@ -15,14 +16,14 @@ const Table = ({ data }) => {
       <tbody>
         {data.map((item, index) => (
           <tr key={index} className="odd:bg-gray-200 mb-2">
-            <td className="">{item.id}</td>
-            <td className="text-left">{item.title}</td>
+            <td className="">{item.asset_id}</td>
+            <td className="text-left">{item.public_id}</td>
             <td className="text-left">
               <a
-                href={item.image}
+                href={item.secure_url}
                 className="font-normal text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
               >
-                {item.title}
+                {`${item.public_id}.${item.format}`}
               </a>
             </td>
           </tr>
