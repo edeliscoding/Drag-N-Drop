@@ -2,16 +2,22 @@ import Image from "next/image";
 import Table from "../components/Table";
 // import { authOptions } from "../api/auth/[...nextauth]";
 // import { getServerSession } from "next-auth/next";
-import Router from "next/navigation";
 
-async function getImages() {
-  const response = await fetch(`${process.env.CLOUDINARY_SERVER}/api/upload`);
-  // const json = await response.json();
-  // return json;
-  return response.json();
-}
+// async function getImages() {
+//   const response = await fetch(`${process.env.CLOUDINARY_SERVER}/api/upload`);
+//   // const json = await response.json();
+//   // return json;
+//   return response.json();
+// }
 
 export default async function MyUploads() {
+  async function getImages() {
+    const response = await fetch(`${process.env.CLOUDINARY_SERVER}/api/upload`);
+    // const json = await response.json();
+    // return json;
+    return response.json();
+  }
+
   const { data } = await getImages();
 
   // const session = await getServerSession(authOptions);
