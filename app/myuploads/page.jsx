@@ -5,7 +5,7 @@ import Table from "../components/Table";
 import Router from "next/navigation";
 
 async function getImages() {
-  const response = await fetch(`${process.env.CLOUDINARY_SERVER}/api/upload`);
+  const response = await fetch("/api/upload");
   // const json = await response.json();
   // return json;
   return response.json();
