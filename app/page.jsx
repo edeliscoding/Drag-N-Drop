@@ -1,6 +1,6 @@
 "use client";
 
-import { Cloudinary } from "@cloudinary/url-gen";
+// import { Cloudinary } from "@cloudinary/url-gen";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -66,7 +66,7 @@ export default function Home() {
     let promises = [];
     images.forEach(async (image) => {
       promises.push(
-        await axios.post("https://api.cloudinary.com/v1_1/edel-upload/upload", {
+        await axios.post(`https://api.cloudinary.com/v1_1/edel-upload/upload`, {
           file: image,
           // overwrite: true,
 

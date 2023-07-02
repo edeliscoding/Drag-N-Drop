@@ -3,9 +3,19 @@ import Head from "next/head";
 import Script from "next/script";
 import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-
+import { useRouter } from "next/navigation";
 export default function MyPage() {
   const containerRef = useRef(null);
+  const session = useSession();
+  const router = useRouter();
+
+  if (session.status === "loading") {
+    return <p>Loading...</p>;
+  }
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
+  }
+
   useEffect(() => {
     cloudinary
       .galleryWidget({
@@ -26,4 +36,6 @@ export default function MyPage() {
       Gallery Page
     </div>
   );
+
+  // return <div>My Files Page</div>;
 }

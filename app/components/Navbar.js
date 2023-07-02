@@ -7,7 +7,7 @@ import React from "react";
 const Navbar = () => {
   const session = useSession();
   const router = useRouter();
-  console.log(router);
+  // console.log(router);
   // let current = location.pathname;
   // console.log(current);
 
@@ -19,7 +19,12 @@ const Navbar = () => {
     },
     {
       id: 2,
-      name: "MyFiles",
+      name: "My Uploaded Files",
+      href: "/myuploads",
+    },
+    {
+      id: 3,
+      name: "Gallery",
       href: "/myfiles",
     },
   ];
