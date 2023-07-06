@@ -10,6 +10,7 @@ import Table from "../components/Table";
 //   // return json;
 //   return response.json();
 // }
+export const revalidate = 1;
 
 async function getImages() {
   const response = await fetch(

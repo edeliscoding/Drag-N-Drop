@@ -12,12 +12,14 @@ import axiosInstance from "./api/utils";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+export const revalidate = 15;
+
 export default function Home() {
   const [images, setImages] = useState([]);
   const session = useSession();
   const router = useRouter();
   console.log(session);
-
+  const currentUser = session?.data?.user.name;
   const notify = (callback) =>
     toast.success(
       "🦄 Your file has been submitted!",
@@ -63,23 +65,118 @@ export default function Home() {
   });
 
   const handleUpload = async () => {
-    let promises = [];
-    images.forEach(async (image) => {
-      promises.push(
-        await axios.post(`https://api.cloudinary.com/v1_1/edel-upload/upload`, {
-          file: image,
-          // overwrite: true,
+    // let promises = [];
+    // const prom = await Promise.all(
+    //   promises.map(async (promise) => {
+    //     return promise;
+    //   })
+    // );
 
+    // const urls = promises.map((promise) => promise.data?.url); //this is correct
+    // let copy = [...promises];
+    // images.forEach(async (image) => {
+    //   promises.push(
+    //     await axios.post(`https://api.cloudinary.com/v1_1/edel-upload/upload`, {
+    //       file: image,
+    //       // overwrite: true,
+    //       upload_preset: "edel-upload",
+    //     })
+    //   );
+    // });
+    // await Promise.all(promises).then(function (promise) {
+    //   console.log(".then promise", promise);
+    // });
+    // const call = async () => {
+    //   await Promise.all(
+    //     promises.map(async (r) => {
+    //       console.log(r);
+    //     })
+    //   );
+    // };
+    // call();
+
+    // promises.forEach((promise, index) => {
+    //   const data = promise.data;
+    //   console.log("From Loop", data);
+    // });
+    // await fetch("http://localhost:3000/api/images", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     image_url: url,
+    //     // username: session?.data?.user.name,
+    //     username: currentUser,
+    //   }),
+    // });
+    //** single image upload - it works**/
+    // const image = images[0];
+    // const response = await axios.post(
+    //   `https://api.cloudinary.com/v1_1/edel-upload/upload`,
+    //   {
+    //     file: image,
+    //     upload_preset: "edel-upload",
+    //   }
+    // );
+    // return response;
+    //** end of single image upload */
+
+    // notify(handleClear);
+    // res.send(response);
+    // return promises;
+
+    // });
+    // console.log(urlArray);
+    // const dbresponse = await fetch("http://localhost:3000/api/images", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     image_url: imageUrl,
+    //     // username: session?.data?.user.name,
+    //     username: currentUser,
+    //   }),
+    // });
+
+    // CHAT GPT CODE BELOW//
+    let promises = [];
+
+    images.forEach((image) => {
+      promises.push(
+        axios.post(`https://api.cloudinary.com/v1_1/edel-upload/upload`, {
+          file: image,
           upload_preset: "edel-upload",
         })
       );
     });
-    const response = await Promise.all(promises);
-    notify(handleClear);
 
-    return response;
+    Promise.all(promises)
+      .then((responses) => {
+        // Access the 'url' property inside each response
+        const urls = responses.map((response) => response.data.url);
+
+        // Do something with the 'urls' array
+        fetch("/api/images", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            image_url: urls,
+            // username: session?.data?.user.name,
+            username: currentUser,
+          }),
+        });
+        notify(handleClear);
+        console.log(urls);
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the requests
+        console.error(error);
+      });
   };
-
   const handleClear = () => {
     setImages([]);
   };

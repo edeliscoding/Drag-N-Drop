@@ -17,15 +17,20 @@ const Navbar = () => {
       name: "Home",
       href: "/",
     },
+    // {
+    //   id: 2,
+    //   name: "My Uploaded Files",
+    //   href: "/myuploads",
+    // },
     {
       id: 2,
-      name: "My Uploaded Files",
-      href: "/myuploads",
+      name: "Gallery",
+      href: "/myfiles",
     },
     {
       id: 3,
-      name: "Gallery",
-      href: "/myfiles",
+      name: "My Files",
+      href: "/files",
     },
   ];
 
@@ -39,26 +44,33 @@ const Navbar = () => {
           <h1 className="text-white font-bold">Edel Upload File Project</h1>
         </Link>
         <nav className="flex gap-4 items-center">
-          {navLinks.map((navLink) => {
-            // const isActive = pathname.startsWith(navLink.href);
-            // console.log(isActive);
-            return (
-              <Link
-                key={navLink.id}
-                href={navLink.href}
-                // className={`${
-                //   router.pathname === href
-                //     ? "bg-orange-500 text-white"
-                //     : "bg-white text-gray-800"
-                // }`}
-                className={`${
-                  router.pathname === navLink.href
-                } ? bg-slate-800 text-white py-2 px-3 rounded-full : "bg-white text-gray-800"`}
-              >
-                {navLink.name}
-              </Link>
-            );
-          })}
+          {session.status === "authenticated" ? (
+            <div className="flex gap-2">
+              {navLinks.map((navLink) => {
+                // const isActive = pathname.startsWith(navLink.href);
+                // console.log(isActive);
+                return (
+                  <Link
+                    key={navLink.id}
+                    href={navLink.href}
+                    // className={`${
+                    //   router.pathname === href
+                    //     ? "bg-orange-500 text-white"
+                    //     : "bg-white text-gray-800"
+                    // }`}
+                    className={`${
+                      router.pathname === navLink.href
+                    } ? bg-slate-800 text-white py-2 px-3 rounded-full : "bg-white text-gray-800"`}
+                  >
+                    {navLink.name}
+                  </Link>
+                );
+              })}{" "}
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           {/* <Link className="active" href="/">
             Home
           </Link>

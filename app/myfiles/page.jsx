@@ -19,8 +19,12 @@ export default function MyPage() {
           { tag: "animal" },
           { tag: "design" },
           { tag: "wow" },
+          { tag: "people" },
+          { tag: " " },
+          { tag: "landscape" },
           { tag: "videos", mediaType: "video" },
         ],
+        // mediaAssets: [{ tag: "wow", mediaType: "image" }],
       })
       .render();
   }, []);
