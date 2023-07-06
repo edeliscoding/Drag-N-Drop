@@ -15,9 +15,6 @@ const Login = () => {
   // if (session.status === "loading") {
   //   return <p>Loading</p>;
   // }
-  if (session.status === "authenticated") {
-    router?.push("/");
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +23,10 @@ const Login = () => {
     const password = e.target[1].value;
     signIn("credentials", { email, password });
   };
+  if (session.status === "authenticated") {
+    router?.push("/");
+  }
+
   return (
     <section class="bg-gray-50 dark:bg-gray-900">
       <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
