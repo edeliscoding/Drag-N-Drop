@@ -36,14 +36,37 @@ export const GET = async (request) => {
 // };
 
 export const POST = async (request) => {
-  const { image_url, username } = await request.json();
-  console.log("from API POST", image_url, username);
+  // const { image_url, username, resource_type, format } = await request.json();
+  const { file, username } = await request.json();
+  // console.log("from API POST", image_url, username, resource_type, format);
+  console.log("from API POST", file, username);
   await connect();
-
-  const newImages = new Image({ image_url, username });
-  console.log(newImages);
+  // publicId: publicId,
+  // url: urls,
+  // resource_type: resource_type,
+  // format: format,
+  const { public_id, url, resource_type, format } = file;
+  //  file: {
+  //   publicId: [String],
+  //   url: [String],
+  //   resource_type: [String],
+  //   format: [String],
+  // },
+  // const newImages = new Image({
+  //   file: { public_id, url, resource_type, format },
+  // });
+  // const fileDocument = {
+  //   publicId: public_id,
+  //   url: url,
+  //   resource_type: resource_type,
+  //   format: format,
+  // };
+  const newImages = new Image({ file, username });
+  // console.log(newImages);
   try {
     await newImages.save();
+    // const insert = await Image.insertOne(fileDocument);
+    // await insert.save();
     return new NextResponse("image Upload successful", { status: 201 });
   } catch (error) {
     return new NextResponse(error.message, { status: 500 });

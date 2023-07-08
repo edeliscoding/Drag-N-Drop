@@ -47,13 +47,44 @@ export default function Files() {
       <div className="max-w-7xl mx-auto">
         <div className="grid max-w-6xl w-full grid-cols-4 gap-3 mt-20">
           {data?.map((item) => {
-            const { image_url } = item;
-            const images = image_url.map((img) => img);
+            const { url } = item.file;
+
+            const { format } = item.file;
+            console.log("from url", url);
+            console.log("from file", format);
+            // const nonImages = format.includes(
+            //   "raw",
+            //   "pdf",
+            //   "doc",
+            //   "tiff",
+            //   "doc"
+            // );
+            const images = url.map((img) => img);
+            // const content = nonImages && <img src="/images/PDF.png" />;
             return (
               <Link href={`files/${item._id}`} key={item._id}>
-                {images.map((url, index) => (
-                  <img className="p-2 object-cover" src={url} key={url} />
-                ))}
+                {images.map((url, index) => {
+                  // const content = nonImages ? (
+                  //   <img src="/images/PDF.png" />
+                  // ) : (
+                  //   <img className="p-2 object-cover" src={url} key={url} />
+                  // );
+                  // const imageformat = (
+                  //   <img className="p-2 object-cover" src={url} key={url} />
+                  // );
+                  // const nonImageformat = <img src="/images/PDF.png" />;
+                  // const renderFile = nonImages ? nonImageFormat : imageformat;
+                  return (
+                    // <img className="p-2 object-cover" src={url} key={url} />
+                    // { content }
+                    // <img
+                    //   className="p-2 object-cover"
+                    //   src={`${nonImages}` ? "/images/PDF.png" : url}
+                    //   key={url}
+                    // />
+                    <img className="p-2 object-cover" src={url} key={url} />
+                  );
+                })}
               </Link>
             );
           })}

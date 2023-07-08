@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 async function getFile(id) {
-  const res = await fetch(`/api/images/${id}`, {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/images/${id}`, {
     cache: "no-store",
   });
   if (!res.ok) {
@@ -14,10 +14,10 @@ async function getFile(id) {
 // console.log(getFiles());
 export default async function File({ params }) {
   const data = await getFile(params.id);
-  const { image_url } = await data;
+  // const { file } = await data;
   console.log("from files", data);
-  console.log(image_url);
-  const content = image_url.map((img, index) => {
+  // console.log(image_url);
+  const content = data.file.url.map((img, index) => {
     return <img src={img} className="aspec-ratio object-cover" key={img} />;
   });
   return (
@@ -38,13 +38,13 @@ export default async function File({ params }) {
           className="aspect-auto"
         /> */}
         <div>
-          <p>{data.title}</p>
-          <p>
+          {/* <p>{data.title}</p> */}
+          {/* <p>
             Tags:{" "}
             {data.tags.map((tag, index) => {
               return <span key={tag + index}>{tag}</span>;
             })}
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

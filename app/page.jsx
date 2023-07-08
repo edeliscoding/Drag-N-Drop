@@ -35,7 +35,7 @@ export default function Home() {
       },
       setTimeout(() => {
         callback();
-      }, 2000)
+      }, 3000)
     );
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
@@ -148,6 +148,16 @@ export default function Home() {
         axios.post(`https://api.cloudinary.com/v1_1/edel-upload/upload`, {
           file: image,
           upload_preset: "edel-upload",
+          // transformation: {
+          //   // flags: `attachment:${image}`,
+          //   // fetch_format: "auto",
+          // },
+          // transformation: {
+          //   flags: `attachment:${image}`,
+          //   fetch_format: "auto",
+          // },
+
+          // flags: attachment,
         })
       );
     });
@@ -157,16 +167,35 @@ export default function Home() {
         // Access the 'url' property inside each response
         const urls = responses.map((response) => response.data.url);
 
+        const resource_type = responses.map(
+          (response) => response.data.resource_type
+        );
+        // const stringify_resource_type = JSON.stringify(resource_type);
+        const format = responses.map((response) => response.data.format);
+        // const isPdf = format.find(el => el.)
+
+        const publicId = responses.map((response) => response.data.public_id);
+        // const stringify_format = JSON.stringify(format);
+        console.log("from promises.all", responses);
+        // const { resource_type, format } = responses.data;
+        //data.resource_type = image,image,raw=worddoc data.format = jpeg,pdf, data.public_id
         // Do something with the 'urls' array
+        console.log("from promise", resource_type, format);
         fetch("/api/images", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            image_url: urls,
-            // username: session?.data?.user.name,
+            file: {
+              publicId: publicId,
+              url: urls,
+              resource_type: resource_type,
+              format: format,
+            },
             username: currentUser,
+            // image_urlresource_type: stringify_resource_type,
+            // format: stringify_format,
           }),
         });
         notify(handleClear);

@@ -7,14 +7,22 @@ const imageSchema = new Schema(
     title: {
       type: String,
     },
-    tags: {
-      type: Array,
+    // tags: {
+    //   type: Array,
+    // },
+    // image_url: [String],
+    file: {
+      publicId: [String],
+      url: [String],
+      resource_type: [String],
+      format: [String],
     },
-    image_url: [String],
     username: {
       type: String,
       // required: true,
     },
+    // resource_type: [],
+    // format: [],
   },
   {
     timestamps: true,

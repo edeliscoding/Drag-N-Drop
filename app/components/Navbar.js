@@ -29,8 +29,13 @@ const Navbar = () => {
     },
     {
       id: 3,
-      name: "My Files",
+      name: "My Pictures",
       href: "/files",
+    },
+    {
+      id: 4,
+      name: "My Uploads",
+      href: "/myuploads",
     },
   ];
 
@@ -41,7 +46,9 @@ const Navbar = () => {
     <div className="w-full bg-slate-500 p-6">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/">
-          <h1 className="text-white font-bold">Edel Upload File Project</h1>
+          <h1 className="text-white font-bold hidden md:block">
+            Edel Upload File Project
+          </h1>
         </Link>
         <nav className="flex gap-4 items-center">
           {session.status === "authenticated" ? (
@@ -60,7 +67,7 @@ const Navbar = () => {
                     // }`}
                     className={`${
                       router.pathname === navLink.href
-                    } ? bg-slate-800 text-white py-2 px-3 rounded-full : "bg-white text-gray-800"`}
+                    } ? bg-slate-800 flex items-center text-center text-white py-2 px-1 md:px-4 rounded-full md:rounded : "bg-white text-gray-800"`}
                   >
                     {navLink.name}
                   </Link>
