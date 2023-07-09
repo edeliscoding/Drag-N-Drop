@@ -1,9 +1,10 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { NextAuthOptions } from "next-auth";
-import { options } from "../api/auth/[...nextauth]/options";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 async function getData(currentUser) {
   const res = await fetch(
@@ -19,18 +20,16 @@ async function getData(currentUser) {
 }
 
 export default async function MyUploads() {
-  const session = await getServerSession(options);
+  const session = await getServerSession(authOptions);
   const currentUser = session?.user.name;
-  //   console.log(session);
+  console.log(session);
   console.log("from server component", session);
   const data = await getData(currentUser);
   console.log("myuploads page", data);
-  // const resData = data.map((urls) => urls);
-  // console.log("resData", resData);
-  // const urls = resData.map((res) => res.url);
-  // console.log("form urls", urls);
-  // const resource_type = resData.map((res) => res.resource_type);
-  // const format = resData.map((res) => res.format);
+
+  if (!session) {
+    redirect("/");
+  }
 
   return (
     <div className="max-w-7xl mx-auto flex justify-between items-center">

@@ -7,8 +7,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NextResponse } from "next/server";
-import axiosInstance from "./api/utils";
+
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -219,6 +218,10 @@ export default function Home() {
   if (session.status === "unauthenticated") {
     router?.push("/login");
   }
+
+  // if (session.status === "unauthenticated") {
+  //   router?.push("/myuploads");
+  // }
 
   if (session.status === "authenticated") {
     return (
