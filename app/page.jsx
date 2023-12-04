@@ -7,7 +7,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { revalidateTag } from "next/cache";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -198,6 +198,7 @@ export default function Home() {
           }),
         });
         notify(handleClear);
+        revalidateTag("myuploads");
         console.log(urls);
       })
       .catch((error) => {

@@ -2,9 +2,9 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import connect from "../../../utils/db";
 import User from "../../../models/User";
+
 export async function POST(request) {
   const { email, password } = await request.json();
-
   // const user = { id: 1, name: "brix", email: "brix@gmail.com" };
   // return user;
   await connect();

@@ -27,11 +27,11 @@ export const authOptions = {
       credentials: {
         email: { label: "email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
-        username: {
-          label: "Username",
-          type: "text",
-          placeholder: "john Smith",
-        },
+        // username: {
+        //   label: "Username",
+        //   type: "text",
+        //   placeholder: "john Smith",
+        // },
       },
       async authorize(credentials) {
         // const user = { id: 1, name: "brix", email: "brix@gmail.com" };
@@ -56,6 +56,7 @@ export const authOptions = {
           }
           if (isPasswordCorrect) {
             return user;
+            console.log("from next-auth route", user);
           }
         } catch (error) {
           throw new Error(error);

@@ -11,6 +11,7 @@ async function getData(currentUser) {
     `${process.env.NEXTAUTH_URL}/api/images?username=${currentUser}`,
     {
       cache: "no-store",
+      next: { tags: ["myuploads"] },
     }
   );
   if (!res.ok) {
