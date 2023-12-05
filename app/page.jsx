@@ -10,8 +10,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { revalidateTag } from "next/cache";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useCreateImageMutation } from "./actions/api";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const revalidate = 15;
+// export const revalidate = 15;
 
 export default function Home() {
   const [images, setImages] = useState([]);
@@ -19,12 +21,15 @@ export default function Home() {
   const router = useRouter();
   console.log(session);
   const currentUser = session?.data?.user.name;
+
+  const createImageMutation = useCreateImageMutation();
+
   const notify = (callback) =>
     toast.success(
       "🦄 Your file has been submitted!",
       {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -34,7 +39,7 @@ export default function Home() {
       },
       setTimeout(() => {
         callback();
-      }, 3000)
+      }, 2000)
     );
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
@@ -63,7 +68,11 @@ export default function Home() {
     accept: "image/*, .doc, .pdf, .docx",
   });
 
+  const handleClear = () => {
+    setImages([]);
+  };
   const handleUpload = async () => {
+    notify(handleClear);
     // let promises = [];
     // const prom = await Promise.all(
     //   promises.map(async (promise) => {
@@ -162,7 +171,7 @@ export default function Home() {
     });
 
     Promise.all(promises)
-      .then((responses) => {
+      .then(async (responses) => {
         // Access the 'url' property inside each response
         const urls = responses.map((response) => response.data.url);
 
@@ -180,25 +189,40 @@ export default function Home() {
         //data.resource_type = image,image,raw=worddoc data.format = jpeg,pdf, data.public_id
         // Do something with the 'urls' array
         console.log("from promise", resource_type, format);
-        fetch("/api/images", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            file: {
-              publicId: publicId,
-              url: urls,
-              resource_type: resource_type,
-              format: format,
-            },
-            username: currentUser,
-            // image_urlresource_type: stringify_resource_type,
-            // format: stringify_format,
-          }),
+        // fetch("/api/images", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     file: {
+        //       publicId: publicId,
+        //       url: urls,
+        //       resource_type: resource_type,
+        //       format: format,
+        //     },
+        //     username: currentUser,
+        //     // image_urlresource_type: stringify_resource_type,
+        //     // format: stringify_format,
+        //   }),
+        // });
+        const result = await createImageMutation.mutateAsync({
+          publicId,
+          urls,
+          resource_type,
+          format,
+          currentUser,
         });
-        notify(handleClear);
-        revalidateTag("myuploads");
+        // The mutation was successful, you can handle success here
+        // revalidateTag("myuploads");
+
+        console.log("Image created successfully:", result);
+        // Create item mutation
+
+        // if (result.status === 201) {
+
+        // }
+        // revalidateTag("myuploads");
         console.log(urls);
       })
       .catch((error) => {
@@ -206,9 +230,14 @@ export default function Home() {
         console.error(error);
       });
   };
-  const handleClear = () => {
-    setImages([]);
-  };
+
+  // const createItemMutation = useMutation(createItem, {
+  //   onSuccess: () => {
+  //     // Invalidate and refetch items query after creating a new item
+  //     queryClient.invalidateQueries("myuploads");
+  //   },
+  // });
+
   useEffect(() => {
     console.log(images);
   }, [images]);
